@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "NewGradle"
 include(":app")
- 
+include(":countstats")

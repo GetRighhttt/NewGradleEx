@@ -4,14 +4,30 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+/*
+Apply is basically just a class that we can override to customize what we want
+ */
+apply<StartCounterPlugin>()
+
+class StartCounterPlugin : Plugin<Project> {
+    private var startNumber = 0
+    private var endNumber = 10
+    override fun apply(project: Project) {
+        do {
+            startNumber++
+            println("Still not at 10 yet.. currently at: $startNumber")
+        } while (startNumber < endNumber)
+    }
+}
+
 android {
     namespace = "com.example.newgradle"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.newgradle"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -40,6 +56,11 @@ android {
 }
 
 dependencies {
+
+    /*
+    Implement countstats module
+     */
+    implementation(project(":countstats"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

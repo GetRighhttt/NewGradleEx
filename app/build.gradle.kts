@@ -34,13 +34,56 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    /*
+    Having a combination of product flavors and build types creates
+    build variants
+     */
+    // makes different versions linked together
+    flavorDimensions += "paid_status"
+    flavorDimensions += "style"
+    // useful for having different versions of an application
+    productFlavors {
+        // paid dimensions
+        create("free") {
+            applicationIdSuffix = ".free"
+            dimension = "paid_status"
+        }
+        create("paid") {
+            applicationIdSuffix = ".paid"
+            dimension = "paid_status"
+        }
+
+        // style dimensions
+        create("blue") {
+            dimension = "style"
+        }
+        create("yellow") {
+            dimension = "style"
+        }
+        create("orange") {
+            dimension = "style"
+        }
+    }
+
+    // stage app is in during development lifecycle
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+            buildConfigField("String", "API_BASE_URL", "\"https://api.example.com\"")
+        }
+        create("staging") {
+            isMinifyEnabled = false
+            isDebuggable = false
+            buildConfigField("String", "API_BASE_URL", "\"https://api.example.com\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_BASE_URL", "\"https://api.example.com\"")
         }
     }
     compileOptions {
@@ -52,6 +95,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
